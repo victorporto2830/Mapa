@@ -6,7 +6,7 @@ import * as L from 'leaflet';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class MapComponent implements OnInit {
+export class AppComponent implements OnInit {
   private map: L.Map;
 
   ngOnInit() {
