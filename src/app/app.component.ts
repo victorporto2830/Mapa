@@ -28,8 +28,8 @@ export class AppComponent implements OnInit {
         description: 'Um belo parque na cidade.'
       },
       {
-        lat: -10.936821,
-        lng: -37.061285,
+        lat: -10.917454,
+        lng: -37.047615,
         title: 'Museu da Gente Sergipana',
         description: 'Museu dedicado à cultura sergipana.'
       }
@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
     let bounds = L.latLngBounds([]);
 
     sampleMarkers.forEach(marker => {
-      const popupContent = `<b>${marker.title}</b><br>${marker.description}`;
+      const popupContent = `<b>Titulo: ${marker.title}</b><br>Descrição: ${marker.description}`;
 
       L.marker([marker.lat, marker.lng], { icon: markerIcon })
         .bindPopup(popupContent)
