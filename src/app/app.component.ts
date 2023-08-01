@@ -7,7 +7,7 @@ import * as L from 'leaflet';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  private map!: L.Map;//
+  private map!: L.Map;
 
   ngOnInit() {
     this.initMap();
@@ -21,14 +21,23 @@ export class AppComponent implements OnInit {
 
   private addSampleMarkers() {
     const sampleMarkers = [
-      { lat: 51.505, lng: -0.09, title: 'Marker 1' },
-      { lat: 51.51, lng: -0.1, title: 'Marker 2' },
-      { lat: 51.49, lng: -0.1, title: 'Marker 3' },
+      { 
+      lat: -10.946934,
+      lng: -37.054598,
+      title: 'Parque da Sementeira',
+      description: 'Um belo parque na cidade.'
+      },
+      {
+      lat: -10.936821,
+      lng: -37.061285,
+      title: 'Museu da Gente Sergipana',
+      description: 'Museu dedicado à cultura sergipana.'
+      }
     ];
 
     sampleMarkers.forEach(marker => {
       const markerIcon = L.icon({
-        iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/5846/5846044.png',
         iconSize: [38, 95],
         iconAnchor: [22, 94],
         popupAnchor: [-3, -76],
