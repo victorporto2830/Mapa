@@ -37,6 +37,7 @@ export class AppComponent implements OnInit {
         openingTime: '9h30',
         paymentMethod: 'Dinheiro'
       }
+      // Adicione outros marcadores com suas informações aqui
     ];
 
     const markerIcon = L.icon({
@@ -50,11 +51,13 @@ export class AppComponent implements OnInit {
 
     sampleMarkers.forEach(marker => {
       const popupContent = `
-        <b>${marker.title}</b><br>
-        ${marker.description}<br>
-        <div style="display: flex; justify-content: space-between;">
-          <span>Abre às ${marker.openingTime}</span>
-          <span>Pagamento: ${marker.paymentMethod}</span>
+        <div class="custom-popup">
+          <b>${marker.title}</b><br>
+          ${marker.description}<br>
+          <div style="display: flex; justify-content: space-between;">
+            <span>Abre às ${marker.openingTime}</span>
+            <span class="payment-method">${marker.paymentMethod}</span>
+          </div>
         </div>
       `;
 
