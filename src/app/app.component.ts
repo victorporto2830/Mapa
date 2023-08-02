@@ -15,13 +15,13 @@ export class AppComponent implements OnInit {
   }
 
   private initMap() {
-    this.map = L.map('map').setView([51.505, -0.09], 13);
+    this.map = L.map('map').setView([0, 0], 2);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
   }
 
   private addSampleMarkers() {
     const sampleMarkers = [
-      {
+      { 
         lat: -10.946934,
         lng: -37.054598,
         title: 'Parque da Sementeira',
@@ -30,14 +30,13 @@ export class AppComponent implements OnInit {
         paymentMethod: 'Cartão de crédito'
       },
       {
-        lat: -10.936821,
-        lng: -37.061285,
+        lat: -10.917454,
+        lng: -37.047615,
         title: 'Museu da Gente Sergipana',
         description: 'Museu dedicado à cultura sergipana.',
         openingTime: '9h30',
         paymentMethod: 'Dinheiro'
       }
-      // Adicione outros marcadores com suas informações aqui
     ];
 
     const markerIcon = L.icon({
@@ -47,19 +46,25 @@ export class AppComponent implements OnInit {
       popupAnchor: [-3, -76],
     });
 
+    let bounds = L.latLngBounds([]);
+
     sampleMarkers.forEach(marker => {
       const popupContent = `
         <b>${marker.title}</b><br>
         ${marker.description}<br>
         <div style="display: flex; justify-content: space-between;">
           <span>Abre às ${marker.openingTime}</span>
-          <span>${marker.paymentMethod}</span>
+          <span>Pagamento: ${marker.paymentMethod}</span>
         </div>
       `;
 
       L.marker([marker.lat, marker.lng], { icon: markerIcon })
         .bindPopup(popupContent)
         .addTo(this.map);
+
+      bounds.extend(L.latLng(marker.lat, marker.lng));
     });
+
+    this.map.fitBounds(bounds);
   }
 }
