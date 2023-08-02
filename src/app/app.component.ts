@@ -52,6 +52,19 @@ export class AppComponent implements OnInit {
     sampleMarkers.forEach(marker => {
       const popupContent = `
         <div class="custom-popup">
+          <style>
+            .custom-popup {
+              padding: 10px;
+              background-color: #f0f0f0; /* Cor de fundo cinza */
+              border-radius: 10px; /* Borda arredondada */
+            }
+            .payment-method {
+              background-color: gray; /* Cor de fundo cinza para o paymentMethod */
+              padding: 5px 10px;
+              border-radius: 5px; /* Borda arredondada */
+              color: white; /* Cor do texto branco */
+            }
+          </style>
           <b>${marker.title}</b><br>
           ${marker.description}<br>
           <div style="display: flex; justify-content: space-between;">
