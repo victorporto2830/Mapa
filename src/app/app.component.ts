@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
     ];
 
     const markerIcon = L.icon({
-      iconUrl: 'https://cdn-icons-png.flaticon.com/512/5846/5846044.png',
+      iconUrl: 'https://e7.pngegg.com/pngimages/189/333/png-clipart-skip-rubbish-bins-waste-paper-baskets-waste-management-material-waste-management-angle-rectangle.png',
       iconSize: [38, 95],
       iconAnchor: [22, 94],
       popupAnchor: [-3, -76],
