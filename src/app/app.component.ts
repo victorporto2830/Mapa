@@ -34,20 +34,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
         this.map.setView([lat, lng], 15);
-
-        const markerIcon = L.icon({
-          iconUrl: 'https://cdn-icons-png.flaticon.com/512/999/999105.png',
-          iconSize: [38, 38],
-          iconAnchor: [19, 38],
-          popupAnchor: [0, -38],
-        });
-
-        const currentLocationMarker = L.marker([lat, lng], {
-          title: 'Your Current Location',
-          icon: markerIcon
-        });
-
-        currentLocationMarker.addTo(this.map);
       });
     }
   }
