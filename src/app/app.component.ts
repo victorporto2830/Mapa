@@ -22,10 +22,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   private initMap() {
     this.map = L.map('map').setView([0, 0], 2);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
-
-    this.map.on('click', (event: L.LeafletMouseEvent) => {
-      this.showMarkerPopup(event.latlng);
-    });
   }
 
   private getCurrentLocation() {
@@ -84,17 +80,5 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
 
     this.map.fitBounds(bounds);
-  }
-
-  private showMarkerPopup(latlng: L.LatLng) {
-    const title = prompt('Enter title for the marker:');
-    if (title) {
-      const description = prompt('Enter description for the marker:');
-      if (description) {
-        this.markers.push({ lat: latlng.lat, lng: latlng.lng, title, description, iconUrl: 'https://cdn-icons-png.flaticon.com/512/999/999105.png' });
-        this.saveMarkersToLocalStorage();
-        this.addMarkersToMap();
-      }
-    }
   }
 }

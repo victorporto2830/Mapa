@@ -1,17 +1,14 @@
 #map {
-  height: 100vh;
-  width: 100%;
+  position: relative;
 }
 
-.custom-popup {
+.click-instructions {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.8);
   padding: 10px;
-  background-color: #f0f0f0; /* Cor de fundo cinza */
-  border-radius: 10px; /* Borda arredondada */
-}
-
-.payment-method {
-  background-color: gray; /* Cor de fundo cinza para o paymentMethod */
-  padding: 5px 10px;
-  border-radius: 5px; /* Borda arredondada */
-  color: white; /* Cor do texto branco */
+  border-radius: 5px;
+  pointer-events: none; /* Ensure the instructions don't interfere with map interactions */
 }
