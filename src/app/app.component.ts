@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
 
 @Component({
@@ -6,71 +6,87 @@ import * as L from 'leaflet';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   private map!: L.Map;
+  private markers: { lat: number; lng: number; title: string; description: string; }[] = [];
 
   ngOnInit() {
     this.initMap();
-    this.addSampleMarkers();
+    this.loadMarkersFromLocalStorage();
+  }
+
+  ngAfterViewInit() {
+    this.getCurrentLocation();
   }
 
   private initMap() {
     this.map = L.map('map').setView([0, 0], 2);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
+
+    this.map.on('click', (event: L.LeafletMouseEvent) => {
+      this.showMarkerPopup(event.latlng);
+    });
   }
 
-  private addSampleMarkers() {
-    const sampleMarkers = [
-      { 
-        lat: -10.946934,
-        lng: -37.054598,
-        title: 'Parque da Sementeira',
-        description: 'Um belo parque na cidade.',
-        openingTime: '8h00',
-        paymentMethod: 'Cartão de crédito'
-      },
-      {
-        lat: -10.917454,
-        lng: -37.047615,
-        title: 'Museu da Gente Sergipana',
-        description: 'Museu dedicado à cultura sergipana.',
-        openingTime: '9h30',
-        paymentMethod: 'Dinheiro'
-      }
-      // Adicione outros marcadores com suas informações aqui
-    ];
+  private getCurrentLocation() {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        this.map.setView([lat, lng], 15);
 
+        const markerIcon = L.icon({
+          iconUrl: 'https://cdn-icons-png.flaticon.com/512/999/999105.png',
+          iconSize: [38, 38],
+          iconAnchor: [19, 38],
+          popupAnchor: [0, -38],
+        });
+
+        const currentLocationMarker = L.marker([lat, lng], {
+          title: 'Your Current Location',
+          icon: markerIcon
+        });
+
+        currentLocationMarker.addTo(this.map);
+      });
+    }
+  }
+
+  private loadMarkersFromLocalStorage() {
+    const savedMarkers = localStorage.getItem('markers');
+    if (savedMarkers) {
+      this.markers = JSON.parse(savedMarkers);
+      this.addMarkersToMap();
+    }
+  }
+
+  private saveMarkersToLocalStorage() {
+    localStorage.setItem('markers', JSON.stringify(this.markers));
+  }
+
+  private addMarkersToMap() {
     const markerIcon = L.icon({
-      iconUrl: '/assets/cacamba.png',
-      iconSize: [38, 95],
-      iconAnchor: [22, 94],
-      popupAnchor: [-3, -76],
+      iconUrl: 'https://cdn-icons-png.flaticon.com/512/999/999105.png',
+      iconSize: [38, 38],
+      iconAnchor: [19, 38],
+      popupAnchor: [0, -38],
     });
 
     let bounds = L.latLngBounds([]);
 
-    sampleMarkers.forEach(marker => {
+    this.markers.forEach(marker => {
       const popupContent = `
         <div class="custom-popup">
           <style>
             .custom-popup {
               padding: 10px;
-              background-color: #f0f0f0; /* Cor de fundo cinza */
-              border-radius: 10px; /* Borda arredondada */
-            }
-            .payment-method {
-              background-color: gray; /* Cor de fundo cinza para o paymentMethod */
-              padding: 5px 10px;
-              border-radius: 5px; /* Borda arredondada */
-              color: white; /* Cor do texto branco */
+              background-color: #f0f0f0;
+              border-radius: 10px;
             }
           </style>
+          <img src="${marker.iconUrl}" alt="${marker.title}" style="width: 100%; max-width: 50px;"><br>
           <b>${marker.title}</b><br>
           ${marker.description}<br>
-          <div style="display: flex; justify-content: space-between;">
-            <span>Abre às ${marker.openingTime}</span>
-            <span class="payment-method">${marker.paymentMethod}</span>
-          </div>
         </div>
       `;
 
@@ -82,5 +98,17 @@ export class AppComponent implements OnInit {
     });
 
     this.map.fitBounds(bounds);
+  }
+
+  private showMarkerPopup(latlng: L.LatLng) {
+    const title = prompt('Enter title for the marker:');
+    if (title) {
+      const description = prompt('Enter description for the marker:');
+      if (description) {
+        this.markers.push({ lat: latlng.lat, lng: latlng.lng, title, description, iconUrl: 'https://cdn-icons-png.flaticon.com/512/999/999105.png' });
+        this.saveMarkersToLocalStorage();
+        this.addMarkersToMap();
+      }
+    }
   }
 }
