@@ -8,7 +8,7 @@ import * as L from 'leaflet';
 })
 export class AppComponent implements OnInit, AfterViewInit {
   private map!: L.Map;
-  private markers: { lat: number; lng: number; title: string; description: string; }[] = [];
+  private markers: { lat: number; lng: number; title: string; description: string; iconUrl?: string }[] = [];
 
   ngOnInit() {
     this.initMap();
