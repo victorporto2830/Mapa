@@ -73,17 +73,42 @@ export class AppComponent implements OnInit, AfterViewInit {
           <img src="${marker.iconUrl}" alt="${marker.title}" style="width: 100%; max-width: 50px;"><br>
           <b>${marker.title}</b><br>
           ${marker.description}<br>
+          <button class="delete-button" data-index="${this.markers.indexOf(marker)}">
+            <img src="/assets/trash.png" alt="Delete" style="width: 20px; height: 20px;">
+          </button>
         </div>
       `;
 
-      L.marker([marker.lat, marker.lng], { icon: markerIcon })
+      const markerLayer = L.marker([marker.lat, marker.lng], { icon: markerIcon })
         .bindPopup(popupContent)
-        .addTo(this.map);
+        .addTo(this.map)
+        .on('popupopen', (event: L.LeafletEvent) => {
+          const deleteButton = event.popup.getElement()?.querySelector('.delete-button');
+          if (deleteButton) {
+            deleteButton.addEventListener('click', () => {
+              this.deleteMarker(marker);
+              this.saveMarkersToLocalStorage();
+              this.map.closePopup();
+            });
+          }
+        });
 
       bounds.extend(L.latLng(marker.lat, marker.lng));
     });
 
     this.map.fitBounds(bounds);
+  }
+
+  private deleteMarker(marker: any) {
+    const index = this.markers.indexOf(marker);
+    if (index !== -1) {
+      this.markers.splice(index, 1);
+      this.map.eachLayer(layer => {
+        if (layer instanceof L.Marker && layer.getLatLng()?.equals([marker.lat, marker.lng])) {
+          this.map.removeLayer(layer);
+        }
+      });
+    }
   }
 
   private showMarkerPopup(latlng: L.LatLng) {
